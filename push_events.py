@@ -22,7 +22,7 @@ eventModel = {
     "name": "",
     "datetimeperiod": ["", ""],
     "status": {
-        "state": "completed",
+        "state": "approved",
         "room": True,
         "budget": True,
     },
