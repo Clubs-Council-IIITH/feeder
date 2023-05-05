@@ -73,8 +73,7 @@ def main(in_csv):
             event["link"] = row["link"] if row["link"] != "" else event["link"]
             event["location"] = row["location"].split(";") if row["location"] else event["location"]
             event["population"] = int(row["population"])
-            if row["poster"] != "":
-                event["poster"] = row["poster"]
+            event["poster"] = row["poster"] if row["poster"] != "" else event["poster"]
 
             # insert into db
             try:
