@@ -43,6 +43,7 @@ eventModel = {
 
 # config
 input_dt_f = "%Y-%m-%d %H:%M:%S%z"
+output_df_f = "%Y-%m-%dT%H:%M:%S%z"
 
 def main(in_csv):
     # track metrics
@@ -65,8 +66,8 @@ def main(in_csv):
             # set event attributes
             event["clubid"] = row["clubid"]
             event["name"] = row["name"]
-            event["datetimeperiod"][0] = datetime.strptime(row["datetimeStart"], input_dt_f)
-            event["datetimeperiod"][1] = datetime.strptime(row["datetimeEnd"], input_dt_f)
+            event["datetimeperiod"][0] = str(datetime.strptime(row["datetimeStart"], input_dt_f).strftime(output_df_f))
+            event["datetimeperiod"][1] = str(datetime.strptime(row["datetimeEnd"], input_dt_f).strftime(output_df_f))
             event["mode"] = row["mode"]
             event["audience"] = row["audience"].replace(" ", "").split(";")
             event["description"] = row["description"] if row["description"] != "" else event["description"]
