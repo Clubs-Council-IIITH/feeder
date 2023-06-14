@@ -8,6 +8,7 @@ from tqdm import tqdm
 from copy import deepcopy
 from datetime import datetime
 from pymongo import MongoClient
+from bson import ObjectId
 
 # get environment variables
 MONGO_USERNAME = getenv("MONGO_USERNAME")
@@ -16,8 +17,25 @@ MONGO_PORT = getenv("MONGO_PORT")
 MONGO_DATABASE = getenv("MONGO_DATABASE")
 MONGO_URI = f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@mongo:{MONGO_PORT}/"
 
+# for handling mongo ObjectIds
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not ObjectId.is_valid(v):
+            raise ValueError("Invalid ObjectId")
+        return ObjectId(v)
+
+    @classmethod
+    def __modify_schema__(cls, field_schema):
+        field_schema.update(type="string")
+
 # template event with default values
 eventModel = {
+    "_id": "",
     "clubid": "",
     "name": "",
     "datetimeperiod": ["", ""],
@@ -64,6 +82,7 @@ def main(in_csv):
             event = deepcopy(eventModel)
 
             # set event attributes
+            event["_id"] = str(PyObjectId())
             event["clubid"] = row["clubid"]
             event["name"] = row["name"]
             event["datetimeperiod"][0] = str(datetime.strptime(row["datetimeStart"], input_dt_f).strftime(output_df_f))
