@@ -41,8 +41,8 @@ eventModel = {
     "datetimeperiod": ["", ""],
     "status": {
         "state": "approved",
-        "room": True,
-        "budget": True,
+        "slo": True,
+        "slc": True,
     },
     "description": "No description available",
     "mode": "hybrid",
